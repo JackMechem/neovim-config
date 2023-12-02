@@ -9,3 +9,4 @@
 ### Credits
 
 > [joseanmartinez](https://www.youtube.com/@joseanmartinez)
+> excellent Neovim config tutorials :)
