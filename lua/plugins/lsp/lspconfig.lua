@@ -61,8 +61,9 @@ return {
 		end
 
 		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
 
+		local capabilities = cmp_nvim_lsp.default_capabilities()
+		capabilities.textDocument.completion.completionItem.snippetSupport = false
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 		for type, icon in pairs(signs) do
