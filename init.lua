@@ -1,4 +1,4 @@
--- 
+--
 -- NEOVIM CONFIGURATION BY JACK MECHEM
 --
 

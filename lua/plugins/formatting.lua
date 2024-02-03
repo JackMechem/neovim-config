@@ -26,6 +26,12 @@ return {
 				async = false,
 				timeout_ms = 1000,
 			},
+			formatters = {
+				prettier = {
+					inherit = true,
+					prepend_args = { "--use-tabs" },
+				},
+			},
 		})
 
 		vim.keymap.set({ "n", "v" }, "<leader>ft", function()

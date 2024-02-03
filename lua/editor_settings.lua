@@ -40,6 +40,7 @@ o.tabstop = 4
 o.softtabstop = 4
 o.shiftwidth = 4
 o.expandtab = true
+bo.shiftwidth = 4
 wo.number = true
 wo.relativenumber = true
 wo.signcolumn = "yes"
