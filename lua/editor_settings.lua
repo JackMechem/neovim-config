@@ -46,5 +46,6 @@ wo.relativenumber = true
 wo.signcolumn = "yes"
 wo.wrap = false
 o.foldmethod = "marker"
+o.cursorline = true
 
 -- }}}

@@ -20,6 +20,7 @@ return {
 				graphql = { "prettier" },
 				lua = { "stylua" },
 				python = { "isort", "black" },
+				c = { "clang_format" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
@@ -29,7 +30,11 @@ return {
 			formatters = {
 				prettier = {
 					inherit = true,
-					prepend_args = { "--use-tabs" },
+					prepend_args = { "--use-tabs --tab-width 4" },
+				},
+				clang_format = {
+					inherit = true,
+					prepend_args = { "--style={BasedOnStyle: LLVM, IndentWidth: 4}" },
 				},
 			},
 		})
