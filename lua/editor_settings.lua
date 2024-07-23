@@ -20,7 +20,6 @@ g.mapleader = " "
 
 -- General {{{
 --
-
 o.background = "dark"
 o.termguicolors = true
 o.syntax = "on"
