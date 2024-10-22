@@ -43,7 +43,24 @@ bo.shiftwidth = 4
 wo.number = true
 wo.relativenumber = true
 wo.signcolumn = "yes"
-wo.wrap = false
+vim.opt.formatoptions = "jcroqlnt"
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	pattern = { "*.md" },
+	callback = function()
+		wo.wrap = true
+		-- vim.opt.colorcolumn = "80"
+		wo.linebreak = true
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+	pattern = { "*.md" },
+	callback = function()
+		wo.wrap = false
+		-- vim.opt.colorcolumn = "120"
+		wo.linebreak = true
+	end,
+})
 o.foldmethod = "marker"
 o.cursorline = true
 

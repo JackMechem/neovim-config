@@ -10,6 +10,12 @@ function ColorMyNightfly()
 	vim.cmd.colorscheme("nightfly")
 end
 
+function ColorTokyonight()
+	vim.opt.background = "dark"
+	vim.opt.termguicolors = true
+	vim.cmd.colorscheme("tokyonight-night")
+end
+
 function ColorMyOnedark()
 	require("onedark").setup({
 		style = "darker",
@@ -74,7 +80,8 @@ end
 
 return {
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-	{ "morhetz/gruvbox", name = "gruvbox", config = ColorMyGruvbox },
+    {"folke/tokyonight.nvim", name = "tokyonight", priority = 1000, config = ColorTokyonight},
+	{ "morhetz/gruvbox", name = "gruvbox" },
 	{ "bluz71/vim-nightfly-colors", name = "nightfly" },
 	{ "navarasu/onedark.nvim", name = "onedark" },
 	"chrisbra/Colorizer",

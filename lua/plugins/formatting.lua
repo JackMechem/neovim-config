@@ -18,7 +18,7 @@ return {
 				yaml = { "prettier" },
 				markdown = { "prettier" },
 				graphql = { "prettier" },
-				lua = { "stylua" },
+				lua = {"stylua"},
 				python = { "isort", "black" },
 				c = { "clang_format" },
 				cpp = { "clang_format" },

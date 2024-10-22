@@ -4,3 +4,4 @@
 
 require("editor_settings")
 require("lazyinit")
+require("maps")
