@@ -16,6 +16,15 @@ local LSP_SERVERS = {
 	clangd = {
 		init_options = { fallbackFlags = { "--indent-width=4" } },
 	},
+	jdtls = {
+		settings = {
+			java = {
+				format = {
+					enabled = true,
+				},
+			},
+		},
+	},
 }
 
 return {
