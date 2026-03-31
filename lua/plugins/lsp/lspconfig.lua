@@ -25,7 +25,95 @@ local LSP_SERVERS = {
 			},
 		},
 	},
+	rust_analyzer = {
+		settings = {
+			["rust-analyzer"] = {
+				diagnostics = {
+					enable = true,
+					experimental = { enable = true },
+				},
+				check = {
+					command = "clippy",
+					extraArgs = { "--all-targets", "--all-features" },
+				},
+				cargo = {
+					buildScripts = { enable = true },
+					features = "all",
+				},
+				procMacro = {
+					enable = true,
+					ignored = {
+						["async-trait"] = { "async_trait" },
+						["napi-derive"] = { "napi" },
+					},
+				},
+				inlayHints = {
+					bindingModeHints = { enable = true },
+					chainingHints = { enable = true },
+					closureCaptureHints = { enable = true },
+					closureReturnTypeHints = { enable = "always" },
+					expressionAdjustmentHints = { enable = "always" },
+					lifetimeElisionHints = {
+						enable = "skip_trivial",
+						useParameterNames = true,
+					},
+					parameterHints = { enable = true },
+					reborrowHints = { enable = "always" },
+					typeHints = {
+						enable = true,
+						hideClosureInitialization = false,
+						hideNamedConstructor = false,
+					},
+				},
+				imports = {
+					granularity = { group = "module" },
+					prefix = "self",
+				},
+				completion = {
+					privateEditable = { enable = true },
+					fullFunctionSignatures = { enable = true },
+				},
+			},
+		},
+	},
 }
+
+local LSP_BINARIES = {
+	["nil_ls"] = "nil",
+	lua_ls = "lua-language-server",
+	ts_ls = "typescript-language-server",
+	clangd = "clangd",
+	jdtls = "jdtls",
+	rust_analyzer = "rust-analyzer",
+	pyright = "pyright",
+	gopls = "gopls",
+	bashls = "bash-language-server",
+	jsonls = "vscode-json-language-server",
+	html = "vscode-html-language-server",
+	cssls = "vscode-css-language-server",
+	zls = "zls",
+	marksman = "marksman",
+	taplo = "taplo",
+	svelte = "svelteserver",
+	astro = "astro-ls",
+	tailwindcss = "tailwindcss-language-server",
+	dockerls = "docker-langserver",
+	yamlls = "yaml-language-server",
+	kotlin_language_server = "kotlin-language-server",
+}
+
+local function enable_available_lsps()
+	for server, binary in pairs(LSP_BINARIES) do
+		if vim.fn.executable(binary) == 1 then
+			local config = LSP_SERVERS[server] or {}
+			vim.lsp.config(server, {
+				settings = config.settings or {},
+				init_options = config.init_options or {},
+			})
+			vim.lsp.enable(server)
+		end
+	end
+end
 
 return {
 	{
@@ -92,13 +180,7 @@ return {
 			-- Diagnostic Icons
 			lsp_zero.set_sign_icons({ error = " ", warn = " ", hint = "󰠠 ", info = " " })
 
-			for name, config in pairs(LSP_SERVERS) do
-				vim.lsp.config(name, {
-					settings = config.settings or {},
-					init_options = config.init_options or {},
-				})
-				vim.lsp.enable(name)
-			end
+			enable_available_lsps()
 
 			local cmp = require("cmp")
 			local cmp_action = require("lsp-zero").cmp_action()

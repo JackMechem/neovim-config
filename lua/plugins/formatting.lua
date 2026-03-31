@@ -23,11 +23,15 @@ return {
 				c = { "clang_format" },
 				cpp = { "clang_format" },
 			},
-			format_on_save = {
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 1000,
-			},
+			format_on_save = function(bufnr)
+				if vim.g.disable_autoformat then
+					return
+				end
+				return {
+					timeout_ms = 500,
+					lsp_format = "fallback",
+				}
+			end,
 			formatters = {
 				prettier = {
 					inherit = true,

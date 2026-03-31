@@ -63,5 +63,6 @@ vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
 })
 o.foldmethod = "marker"
 o.cursorline = true
+vim.g.disable_autoformat = true
 
 -- }}}

@@ -14,7 +14,7 @@ return {
 
 			update_on_change = true,
 
-			app = { "zen", "--new-window" }, -- 'webview', 'browser', string or a table of strings
+			app = { "zen-twilight", "--new-window" }, -- 'webview', 'browser', string or a table of strings
 			-- explained below
 
 			filetype = { "markdown" }, -- list of filetypes to recognize as markdown
