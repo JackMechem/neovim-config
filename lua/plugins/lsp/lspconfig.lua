@@ -25,57 +25,57 @@ local LSP_SERVERS = {
 			},
 		},
 	},
-	rust_analyzer = {
-		settings = {
-			["rust-analyzer"] = {
-				diagnostics = {
-					enable = true,
-					experimental = { enable = true },
-				},
-				check = {
-					command = "clippy",
-					extraArgs = { "--all-targets", "--all-features" },
-				},
-				cargo = {
-					buildScripts = { enable = true },
-					features = "all",
-				},
-				procMacro = {
-					enable = true,
-					ignored = {
-						["async-trait"] = { "async_trait" },
-						["napi-derive"] = { "napi" },
-					},
-				},
-				inlayHints = {
-					bindingModeHints = { enable = true },
-					chainingHints = { enable = true },
-					closureCaptureHints = { enable = true },
-					closureReturnTypeHints = { enable = "always" },
-					expressionAdjustmentHints = { enable = "always" },
-					lifetimeElisionHints = {
-						enable = "skip_trivial",
-						useParameterNames = true,
-					},
-					parameterHints = { enable = true },
-					reborrowHints = { enable = "always" },
-					typeHints = {
-						enable = true,
-						hideClosureInitialization = false,
-						hideNamedConstructor = false,
-					},
-				},
-				imports = {
-					granularity = { group = "module" },
-					prefix = "self",
-				},
-				completion = {
-					privateEditable = { enable = true },
-					fullFunctionSignatures = { enable = true },
-				},
-			},
-		},
-	},
+	-- 	rust_analyzer = {
+	-- 		settings = {
+	-- 			["rust-analyzer"] = {
+	-- 				diagnostics = {
+	-- 					enable = true,
+	-- 					experimental = { enable = true },
+	-- 				},
+	-- 				check = {
+	-- 					command = "clippy",
+	-- 					extraArgs = { "--all-targets", "--all-features" },
+	-- 				},
+	-- 				cargo = {
+	-- 					buildScripts = { enable = true },
+	-- 					features = "all",
+	-- 				},
+	-- 				procMacro = {
+	-- 					enable = true,
+	-- 					ignored = {
+	-- 						["async-trait"] = { "async_trait" },
+	-- 						["napi-derive"] = { "napi" },
+	-- 					},
+	-- 				},
+	-- 				inlayHints = {
+	-- 					bindingModeHints = { enable = true },
+	-- 					chainingHints = { enable = true },
+	-- 					closureCaptureHints = { enable = true },
+	-- 					closureReturnTypeHints = { enable = "always" },
+	-- 					expressionAdjustmentHints = { enable = "always" },
+	-- 					lifetimeElisionHints = {
+	-- 						enable = "skip_trivial",
+	-- 						useParameterNames = true,
+	-- 					},
+	-- 					parameterHints = { enable = true },
+	-- 					reborrowHints = { enable = "always" },
+	-- 					typeHints = {
+	-- 						enable = true,
+	-- 						hideClosureInitialization = false,
+	-- 						hideNamedConstructor = false,
+	-- 					},
+	-- 				},
+	-- 				imports = {
+	-- 					granularity = { group = "module" },
+	-- 					prefix = "self",
+	-- 				},
+	-- 				completion = {
+	-- 					privateEditable = { enable = true },
+	-- 					fullFunctionSignatures = { enable = true },
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 	},
 }
 
 local LSP_BINARIES = {
@@ -84,7 +84,7 @@ local LSP_BINARIES = {
 	ts_ls = "typescript-language-server",
 	clangd = "clangd",
 	jdtls = "jdtls",
-	rust_analyzer = "rust-analyzer",
+	--rust_analyzer = "rust-analyzer",
 	pyright = "pyright",
 	gopls = "gopls",
 	bashls = "bash-language-server",
@@ -137,44 +137,228 @@ return {
 			lsp_zero.extend_lspconfig()
 
 			lsp_zero.on_attach(function(client, bufnr)
-				local opts = { buffer = bufnr, remap = false }
+				local map = function(mode, key, fn, desc)
+					vim.keymap.set(mode, key, fn, { buffer = bufnr, remap = false, desc = desc })
+				end
 
-				vim.keymap.set("n", "gd", function()
-					vim.lsp.buf.definition()
-				end, opts)
-				vim.keymap.set("n", "K", function()
-					vim.lsp.buf.hover()
-				end, opts)
-				vim.keymap.set("n", "<leader>vws", function()
-					vim.lsp.buf.workspace_symbol()
-				end, opts)
-				vim.keymap.set("n", "<leader>ld", function()
-					vim.diagnostic.open_float()
-				end, opts)
-				vim.keymap.set("n", "]d", function()
-					vim.diagnostic.goto_next()
-				end, opts)
-				vim.keymap.set("n", "[d", function()
-					vim.diagnostic.goto_prev()
-				end, opts)
-				vim.keymap.set("n", "<leader>vca", function()
-					vim.lsp.buf.code_action()
-				end, opts)
-				vim.keymap.set("n", "<leader>vcr", function()
-					vim.lsp.codelens.refresh()
-				end, opts)
-				vim.keymap.set("n", "<leader>vcc", function()
-					vim.lsp.codelens.run()
-				end, opts)
-				vim.keymap.set("n", "<leader>vrr", function()
-					vim.lsp.buf.references()
-				end, opts)
-				vim.keymap.set("n", "<leader>vrn", function()
-					vim.lsp.buf.rename()
-				end, opts)
-				vim.keymap.set("i", "<C-h>", function()
-					vim.lsp.buf.signature_help()
-				end, opts)
+				local keymaps = {
+					-- { mode, key, fn, desc }
+					-- Navigation
+					{
+						"n",
+						"gd",
+						vim.lsp.buf.definition,
+						"Go to definition",
+					},
+					{
+						"n",
+						"gD",
+						vim.lsp.buf.declaration,
+						"Go to declaration",
+					},
+					{
+						"n",
+						"gi",
+						vim.lsp.buf.implementation,
+						"Go to implementation",
+					},
+					{
+						"n",
+						"gt",
+						vim.lsp.buf.type_definition,
+						"Go to type definition",
+					},
+					{
+						"n",
+						"<leader>vrr",
+						vim.lsp.buf.references,
+						"List references",
+					},
+					-- Info
+					{
+						"n",
+						"K",
+						vim.lsp.buf.hover,
+						"Hover documentation",
+					},
+					{
+						"i",
+						"<C-h>",
+						vim.lsp.buf.signature_help,
+						"Signature help",
+					},
+					{
+						"n",
+						"<C-h>",
+						vim.lsp.buf.signature_help,
+						"Signature help",
+					},
+					-- Refactor
+					{
+						"n",
+						"<leader>vrn",
+						vim.lsp.buf.rename,
+						"Rename symbol",
+					},
+					{
+						"n",
+						"<leader>vca",
+						vim.lsp.buf.code_action,
+						"Code action",
+					},
+					{
+						"v",
+						"<leader>vca",
+						vim.lsp.buf.code_action,
+						"Code action (range)",
+					},
+					-- Diagnostics
+					{
+						"n",
+						"<leader>ld",
+						vim.diagnostic.open_float,
+						"Line diagnostics",
+					},
+					{
+						"n",
+						"]d",
+						vim.diagnostic.goto_next,
+						"Next diagnostic",
+					},
+					{
+						"n",
+						"[d",
+						vim.diagnostic.goto_prev,
+						"Prev diagnostic",
+					},
+					{
+						"n",
+						"]e",
+						function()
+							vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+						end,
+						"Next error",
+					},
+					{
+						"n",
+						"[e",
+						function()
+							vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+						end,
+						"Prev error",
+					},
+					{
+						"n",
+						"<leader>vd",
+						vim.diagnostic.setloclist,
+						"Diagnostics (loclist)",
+					},
+					-- Workspace / Symbols
+					{
+						"n",
+						"<leader>vws",
+						vim.lsp.buf.workspace_symbol,
+						"Workspace symbols",
+					},
+					{
+						"n",
+						"<leader>vds",
+						vim.lsp.buf.document_symbol,
+						"Document symbols",
+					},
+					-- Codelens
+					{
+						"n",
+						"<leader>vcr",
+						vim.lsp.codelens.refresh,
+						"Codelens refresh",
+					},
+					{
+						"n",
+						"<leader>vcc",
+						vim.lsp.codelens.run,
+						"Codelens run",
+					},
+					-- Misc
+					{
+						"n",
+						"<leader>vrs",
+						function()
+							vim.lsp.buf.format({ async = true })
+						end,
+						"Format buffer",
+					},
+					{
+						"n",
+						"<leader>vrx",
+						function()
+							vim.lsp.stop_client(vim.lsp.get_clients({ bufnr = bufnr }))
+						end,
+						"Stop LSP clients",
+					},
+				}
+
+				for _, km in ipairs(keymaps) do
+					map(km[1], km[2], km[3], km[4])
+				end
+
+				-- Show all LSP keymaps in a floating window
+				map("n", "<leader>v?", function()
+					local col_width = 16
+					local lines = {
+						"  LSP Keymaps",
+						"  " .. string.rep("─", 44),
+						"  Navigation",
+						"  Diagnostics",
+						"  Refactor / Info",
+						"  Workspace",
+						"  Misc",
+					}
+					-- rebuild as formatted list grouped by category
+					local sections = {
+						{ "Navigation", { "gd", "gD", "gi", "gt", "<leader>vrr" } },
+						{ "Info", { "K", "<C-h>" } },
+						{ "Refactor", { "<leader>vrn", "<leader>vca" } },
+						{ "Diagnostics", { "<leader>ld", "]d", "[d", "]e", "[e", "<leader>vd" } },
+						{ "Workspace", { "<leader>vws", "<leader>vds" } },
+						{ "Codelens", { "<leader>vcr", "<leader>vcc" } },
+						{ "Misc", { "<leader>vrs", "<leader>vrx" } },
+					}
+					local lookup = {}
+					for _, km in ipairs(keymaps) do
+						lookup[km[2]] = km[4]
+					end
+					local out = { "", "  LSP Keymaps", "  " .. string.rep("─", 44) }
+					for _, section in ipairs(sections) do
+						table.insert(out, "")
+						table.insert(out, "  " .. section[1])
+						for _, key in ipairs(section[2]) do
+							local desc = lookup[key] or ""
+							local pad = string.rep(" ", math.max(1, col_width - #key))
+							table.insert(out, string.format("    %-2s%-14s  %s", "", key .. pad, desc))
+						end
+					end
+					table.insert(out, "")
+
+					local width = 52
+					local height = #out
+					local buf = vim.api.nvim_create_buf(false, true)
+					vim.api.nvim_buf_set_lines(buf, 0, -1, false, out)
+					vim.bo[buf].modifiable = false
+					vim.api.nvim_open_win(buf, true, {
+						relative = "editor",
+						width = width,
+						height = height,
+						row = math.floor((vim.o.lines - height) / 2),
+						col = math.floor((vim.o.columns - width) / 2),
+						style = "minimal",
+						border = "rounded",
+						title = " LSP Keymaps ",
+						title_pos = "center",
+					})
+					vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, nowait = true })
+					vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", { buffer = buf, nowait = true })
+				end, "Show all LSP keymaps")
 			end)
 
 			-- Diagnostic Icons
