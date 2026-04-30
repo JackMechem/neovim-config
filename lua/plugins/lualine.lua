@@ -5,36 +5,31 @@ return {
 		local lualine = require("lualine")
 		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
-		local theme_colors = require("kanagawa.colors").setup().theme
+		local material_colors = require("material.colors")
 
-		local theme = require("lualine.themes.kanagawa")
+		local theme = require("lualine.themes.material")
 
+		-- Color table for highlights
+		-- stylua: ignore
+		local colors = {
+			bg       = material_colors.editor.bg,
+			gray     = material_colors.editor.bg_alt,
+			fg       = material_colors.editor.fg,
+			yellow   = material_colors.main.yellow,
+			cyan     = material_colors.main.cyan,
+			darkblue = material_colors.main.paleblue,
+			green    = material_colors.main.green,
+			orange   = material_colors.main.orange,
+			violet   = material_colors.main.purple,
+			magenta  = material_colors.main.pink,
+			blue     = material_colors.main.blue,
+			red      = material_colors.main.red,
+		}
 
-
-
-
-        
--- Color table for highlights
--- stylua: ignore
-local colors = {
-  bg       = theme_colors.ui.bg_p1,
-  gray = theme_colors.ui.bg_p2;
-  fg       = theme_colors.term[16],
-  yellow   = theme_colors.term[4],
-  cyan     = theme_colors.term[7],
-  darkblue = theme_colors.term[5],
-  green    = theme_colors.term[3],
-  orange   = theme_colors.term[17],
-  violet   = theme_colors.term[14],
-  magenta  = theme_colors.term[6],
-  blue     = theme_colors.term[13],
-  red      = theme_colors.term[2],
-}
-
-		local kanagawaTheme = theme
-		kanagawaTheme.inactive.a.bg = colors.bg
-		kanagawaTheme.inactive.b.bg = colors.bg
-		kanagawaTheme.inactive.c.bg = colors.bg
+		local materialTheme = theme
+		materialTheme.inactive.a.bg = colors.bg
+		materialTheme.inactive.b.bg = colors.bg
+		materialTheme.inactive.c.bg = colors.bg
 
 		local conditions = {
 			buffer_not_empty = function()
@@ -56,7 +51,7 @@ local colors = {
 				-- Disable sections and component separators
 				component_separators = "",
 				section_separators = "",
-				theme = kanagawaTheme,
+				theme = materialTheme,
 			},
 			sections = {
 				-- these are to remove the defaults
@@ -115,7 +110,7 @@ local colors = {
 		ins_inac_left({
 			"diagnostics",
 			sources = { "nvim_diagnostic" },
-			symbols = { error = " ", warn = " ", info = " " },
+			symbols = { error = " ", warn = " ", info = " " },
 			diagnostics_color = {
 				error = { fg = colors.red },
 				warn = { fg = colors.yellow },
@@ -145,7 +140,7 @@ local colors = {
 				end
 				return msg
 			end,
-			icon = " ",
+			icon = " ",
 			color = { fg = colors.fg, gui = "bold" },
 		})
 
@@ -166,14 +161,14 @@ local colors = {
 
 		ins_inac_right({
 			"branch",
-			icon = "",
+			icon = "",
 			color = { fg = colors.violet, gui = "bold" },
 		})
 
 		ins_inac_right({
 			"diff",
 			-- Is it me or the symbol for modified us really weird
-			symbols = { added = " ", modified = "󰝤 ", removed = " " },
+			symbols = { added = " ", modified = "󰝤 ", removed = " " },
 			diff_color = {
 				added = { fg = colors.green },
 				modified = { fg = colors.orange },
@@ -209,13 +204,13 @@ local colors = {
 					n = colors.blue,
 					i = colors.green,
 					v = colors.violet,
-					[""] = colors.violet,
+					[""] = colors.violet,
 					V = colors.violet,
 					c = colors.magenta,
 					no = colors.red,
 					s = colors.orange,
 					S = colors.orange,
-					[""] = colors.orange,
+					[""] = colors.orange,
 					ic = colors.yellow,
 					R = colors.violet,
 					Rv = colors.violet,
@@ -250,7 +245,7 @@ local colors = {
 		ins_left({
 			"diagnostics",
 			sources = { "nvim_diagnostic" },
-			symbols = { error = " ", warn = " ", info = " " },
+			symbols = { error = " ", warn = " ", info = " " },
 			diagnostics_color = {
 				error = { fg = colors.red },
 				warn = { fg = colors.yellow },
@@ -283,7 +278,7 @@ local colors = {
 				end
 				return msg
 			end,
-			icon = " ",
+			icon = " ",
 			color = { fg = colors.fg, gui = "bold" },
 		})
 
@@ -304,14 +299,14 @@ local colors = {
 
 		ins_right({
 			"branch",
-			icon = "",
+			icon = "",
 			color = { fg = colors.violet, gui = "bold" },
 		})
 
 		ins_right({
 			"diff",
 			-- Is it me or the symbol for modified us really weird
-			symbols = { added = " ", modified = "󰝤 ", removed = " " },
+			symbols = { added = " ", modified = "󰝤 ", removed = " " },
 			diff_color = {
 				added = { fg = colors.green },
 				modified = { fg = colors.orange },

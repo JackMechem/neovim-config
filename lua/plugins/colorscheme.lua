@@ -16,6 +16,11 @@ function ColorTokyonight()
 	vim.cmd.colorscheme("tokyonight-night")
 end
 
+function ColorMaterial()
+	vim.g.material_style = "darker"
+	vim.cmd.colorscheme("material")
+end
+
 function ColorMyKanagawa()
 	-- Default options:
 	require("kanagawa").setup({
@@ -112,7 +117,8 @@ end
 return {
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{ "folke/tokyonight.nvim", name = "tokyonight", priority = 1000 },
-	{ "rebelot/kanagawa.nvim", name = "kanagawa", priority = 1000, config = ColorMyKanagawa },
+	{ "rebelot/kanagawa.nvim", name = "kanagawa", priority = 1000 },
+	{ "marko-cerovac/material.nvim", name = "material", priority = 1000, config = ColorMaterial },
 	{ "morhetz/gruvbox", name = "gruvbox" },
 	{ "bluz71/vim-nightfly-colors", name = "nightfly" },
 	{ "navarasu/onedark.nvim", name = "onedark" },
